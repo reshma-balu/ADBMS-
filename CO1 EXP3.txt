@@ -1,0 +1,210 @@
+SQL> CREATE TABLE CUSTOMERS(ID INT,NAME VARCHAR(20),AGE INT,ADDRESS VARCHAR(50),SALARY FLOAT);
+
+Table created.
+
+SQL> INSERT INTO CUSTOMERS VALUES(1,'RAMESH',32,'AHMEDABAD',2000);
+
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS VALUES(&ID,'&NAME',&AGE,'&ADDRESS',&SALARY);
+Enter value for id: 2
+Enter value for name: KHILAN
+Enter value for age: 25
+Enter value for address: DELHI
+Enter value for salary: 1500
+old   1: INSERT INTO CUSTOMERS VALUES(&ID,'&NAME',&AGE,'&ADDRESS',&SALARY)
+new   1: INSERT INTO CUSTOMERS VALUES(2,'KHILAN',25,'DELHI',1500)
+
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS VALUES(1,'RAMESH',32,'AHMEDABAD',2000);
+
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS VALUES(&ID,'&NAME',&AGE,'&ADDRESS',&SALARY);
+Enter value for id: 3
+Enter value for name: KAUSHIK
+Enter value for age: 23
+Enter value for address: KOTA
+Enter value for salary: 2000
+old   1: INSERT INTO CUSTOMERS VALUES(&ID,'&NAME',&AGE,'&ADDRESS',&SALARY)
+new   1: INSERT INTO CUSTOMERS VALUES(3,'KAUSHIK',23,'KOTA',2000)
+
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS VALUES(&ID,'&NAME',&AGE,'&ADDRESS',&SALARY);
+Enter value for id: 4
+Enter value for name: CHAITHALI
+Enter value for age: 25
+Enter value for address: MUMBAI
+Enter value for salary: 6500
+old   1: INSERT INTO CUSTOMERS VALUES(&ID,'&NAME',&AGE,'&ADDRESS',&SALARY)
+new   1: INSERT INTO CUSTOMERS VALUES(4,'CHAITHALI',25,'MUMBAI',6500)
+
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS VALUES(&ID,'&NAME',&AGE,'&ADDRESS',&SALARY);
+Enter value for id: 5
+Enter value for name: HARDIK
+Enter value for age: 27
+Enter value for address: BHOPAL
+Enter value for salary: 8500
+old   1: INSERT INTO CUSTOMERS VALUES(&ID,'&NAME',&AGE,'&ADDRESS',&SALARY)
+new   1: INSERT INTO CUSTOMERS VALUES(5,'HARDIK',27,'BHOPAL',8500)
+
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS VALUES(&ID,'&NAME',&AGE,'&ADDRESS',&SALARY);
+Enter value for id: 6
+Enter value for name: KOMAL
+Enter value for age: 22
+Enter value for address: MP
+Enter value for salary: 4500
+old   1: INSERT INTO CUSTOMERS VALUES(&ID,'&NAME',&AGE,'&ADDRESS',&SALARY)
+new   1: INSERT INTO CUSTOMERS VALUES(6,'KOMAL',22,'MP',4500)
+
+1 row created.
+
+SQL> INSERT INTO CUSTOMERS VALUES(&ID,'&NAME',&AGE,'&ADDRESS',&SALARY);
+Enter value for id: 7
+Enter value for name: MUFFY
+Enter value for age: 24
+Enter value for address: INDORE
+Enter value for salary: 1000
+old   1: INSERT INTO CUSTOMERS VALUES(&ID,'&NAME',&AGE,'&ADDRESS',&SALARY)
+new   1: INSERT INTO CUSTOMERS VALUES(7,'MUFFY',24,'INDORE',1000)
+
+1 row created.
+
+SQL> SELECT * FROM CUSTOMERS
+  2  ;
+
+        ID NAME                        AGE
+---------- -------------------- ----------
+ADDRESS                                                SALARY
+-------------------------------------------------- ----------
+         1 RAMESH                       32
+AHMEDABAD                                                2000
+
+         2 KHILAN                       25
+DELHI                                                    1500
+
+         1 RAMESH                       32
+AHMEDABAD                                                2000
+
+
+        ID NAME                        AGE
+---------- -------------------- ----------
+ADDRESS                                                SALARY
+-------------------------------------------------- ----------
+         3 KAUSHIK                      23
+KOTA                                                     2000
+
+         4 CHAITHALI                    25
+MUMBAI                                                   6500
+
+         5 HARDIK                       27
+BHOPAL                                                   8500
+
+
+        ID NAME                        AGE
+---------- -------------------- ----------
+ADDRESS                                                SALARY
+-------------------------------------------------- ----------
+         6 KOMAL                        22
+MP                                                       4500
+
+         7 MUFFY                        24
+INDORE                                                   1000
+
+
+8 rows selected.
+
+SQL> CREATE TABLE ORDERS(OID INTEGER,DATES VARCHAR(20),CUSTOMER_ID INTEGER,AMOUNT FLOAT);
+
+Table created.
+
+SQL> INSERT INTO ORDERS VALUES(102,'2009-10-08',3,3000);
+
+1 row created.
+
+SQL> INSERT INTO ORDERS VALUES(100,'2009-10-08',3,1500);
+
+1 row created.
+
+SQL> INSERT INTO ORDERS VALUES(101,'2009-11-20',2,1560);
+
+1 row created.
+
+SQL> INSERT INTO ORDERS VALUES(103,'2008-05-20',4,2060);
+
+1 row created.
+
+SQL> SELECT * FROM ORDERS;
+
+       OID DATES                CUSTOMER_ID     AMOUNT
+---------- -------------------- ----------- ----------
+       102 2009-10-08                     3       3000
+       100 2009-10-08                     3       1500
+       101 2009-11-20                     2       1560
+       103 2008-05-20                     4       2060
+
+SQL> SELECT ID,NAME,AMOUNT,DATES
+  2  FROM CUSTOMERS
+  3  INNER JOIN ORDERS
+  4  ON CUSTOMERS.ID=ORDERS.CUSTOMER_ID;
+
+        ID NAME                     AMOUNT DATES
+---------- -------------------- ---------- --------------------
+         2 KHILAN                     1560 2009-11-20
+         3 KAUSHIK                    1500 2009-10-08
+         3 KAUSHIK                    3000 2009-10-08
+         4 CHAITHALI                  2060 2008-05-20
+
+SQL> SELECT ID,NAME,AMOUNT,DATES
+  2  FROM CUSTOMERS
+  3  LEFT JOIN ORDERS
+  4  ON CUSTOMERS.ID=ORDERS.CUSTOMER_ID;
+
+        ID NAME                     AMOUNT DATES
+---------- -------------------- ---------- --------------------
+         3 KAUSHIK                    3000 2009-10-08
+         3 KAUSHIK                    1500 2009-10-08
+         2 KHILAN                     1560 2009-11-20
+         4 CHAITHALI                  2060 2008-05-20
+         5 HARDIK
+         1 RAMESH
+         1 RAMESH
+         6 KOMAL
+         7 MUFFY
+
+9 rows selected.
+
+SQL> SELECT ID,NAME,AMOUNT,DATES
+  2  FROM CUSTOMERS
+  3  RIGHT JOIN ORDERS
+  4  ON CUSTOMERS.ID=ORDERS.CUSTOMER_ID;
+
+        ID NAME                     AMOUNT DATES
+---------- -------------------- ---------- --------------------
+         2 KHILAN                     1560 2009-11-20
+         3 KAUSHIK                    1500 2009-10-08
+         3 KAUSHIK                    3000 2009-10-08
+         4 CHAITHALI                  2060 2008-05-20
+
+SQL> SELECT ID,NAME,AMOUNT,DATES
+  2  FROM CUSTOMERS
+  3  FULL JOIN ORDERS
+  4  ON CUSTOMERS.ID=ORDERS.CUSTOMER_ID;
+
+        ID NAME                     AMOUNT DATES
+---------- -------------------- ---------- --------------------
+         3 KAUSHIK                    3000 2009-10-08
+         3 KAUSHIK                    1500 2009-10-08
+         2 KHILAN                     1560 2009-11-20
+         4 CHAITHALI                  2060 2008-05-20
+         5 HARDIK
+         1 RAMESH
+         1 RAMESH
+         6 KOMAL
+         7 MUFFY

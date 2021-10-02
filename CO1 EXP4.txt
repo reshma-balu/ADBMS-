@@ -1,0 +1,123 @@
+Qs.Create a table employee with the following fields and create a view which contains the name
+and salary &gt; 10000 and update the view by changing employees salary to 1000. Employee(
+Name, DA, HRA, TA, Salary)
+
+
+SQL> grant create view to scott;
+
+Grant succeeded.
+
+SQL> create table employee(name varchar(10),da number(10),hra number(10),ta number(10),salar
+(10));
+
+Table created.
+
+SQL> insert into employee values('&name',&da,&hra,&ta,&salary);
+Enter value for name: Anil
+Enter value for da: 1000
+Enter value for hra: 2000
+Enter value for ta: 1000
+Enter value for salary: 15000
+old   1: insert into employee values('&name',&da,&hra,&ta,&salary)
+new   1: insert into employee values('Anil',1000,2000,1000,15000)
+
+1 row created.
+
+SQL>  insert into employee values('&name',&da,&hra,&ta,&salary);
+Enter value for name: Arun
+Enter value for da: 1000
+Enter value for hra: 3000
+Enter value for ta: 1500
+Enter value for salary: 20000
+old   1:  insert into employee values('&name',&da,&hra,&ta,&salary)
+new   1:  insert into employee values('Arun',1000,3000,1500,20000)
+
+1 row created.
+
+SQL>  insert into employee values('&name',&da,&hra,&ta,&salary);
+Enter value for name: Anu
+Enter value for da: 500
+Enter value for hra: 2000
+Enter value for ta: 500
+Enter value for salary: 9000
+old   1:  insert into employee values('&name',&da,&hra,&ta,&salary)
+new   1:  insert into employee values('Anu',500,2000,500,9000)
+
+1 row created.
+
+SQL>  insert into employee values('&name',&da,&hra,&ta,&salary);
+Enter value for name: Beena
+Enter value for da: 900
+Enter value for hra: 2500
+Enter value for ta: 1000
+Enter value for salary: 11000
+old   1:  insert into employee values('&name',&da,&hra,&ta,&salary)
+new   1:  insert into employee values('Beena',900,2500,1000,11000)
+
+1 row created.
+
+SQL>  insert into employee values('&name',&da,&hra,&ta,&salary);
+Enter value for name: Remya
+Enter value for da: 1500
+Enter value for hra: 1000
+Enter value for ta: 2000
+Enter value for salary: 10000
+old   1:  insert into employee values('&name',&da,&hra,&ta,&salary)
+new   1:  insert into employee values('Remya',1500,1000,2000,10000)
+
+1 row created.
+
+SQL> select * from employee;
+
+NAME               DA        HRA         TA     SALARY
+---------- ---------- ---------- ---------- ----------
+Anil             1000       2000       1000      15000
+Arun             1000       3000       1500      20000
+Anu               500       2000        500       9000
+Beena             900       2500       1000      11000
+Remya            1500       1000       2000      10000
+
+SQL> create view emp as select name,salary from employee where salary>10000;
+
+View created.
+
+SQL> select * from emp;
+
+NAME           SALARY
+---------- ----------
+Anil            15000
+Arun            20000
+Beena           11000
+
+SQL> update employee set salary=25000;
+
+5 rows updated.
+
+SQL> select * from emp;
+
+NAME           SALARY
+---------- ----------
+Anil            25000
+Arun            25000
+Anu             25000
+Beena           25000
+Remya           25000
+
+SQL> update emp set salary=1000;
+
+5 rows updated.
+
+SQL> select * from employee;
+
+NAME               DA        HRA         TA     SALARY
+---------- ---------- ---------- ---------- ----------
+Anil             1000       2000       1000       1000
+Arun             1000       3000       1500       1000
+Anu               500       2000        500       1000
+Beena             900       2500       1000       1000
+Remya            1500       1000       2000       1000
+
+
+SQL> drop view emp;
+
+View dropped.

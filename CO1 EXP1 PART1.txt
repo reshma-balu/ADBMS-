@@ -1,0 +1,211 @@
+SQL> create table student(rollno integer primary key,name varchar(20),dob date,dept varchar(5),marks
+ float);
+
+Table created.
+
+a.SQL> insert into student values(1,'Amitha','18-Jun-1998','CS',480);
+
+1 row created.
+
+SQL> insert into student values(&rollno,'&name','&dob','&dept',&marks);
+Enter value for rollno: 2
+Enter value for name: arya
+Enter value for dob: 12-Jul-1989
+Enter value for dept: IT
+Enter value for marks: 500
+old   1: insert into student values(&rollno,'&name','&dob','&dept',&marks)
+new   1: insert into student values(2,'arya','12-Jul-1989','IT',500)
+
+1 row created.
+
+SQL> insert into student values(&rollno,'&name','&dob','&dept',&marks);
+Enter value for rollno: 3
+Enter value for name: George
+Enter value for dob: 19-Jan-1989
+Enter value for dept: CS
+Enter value for marks: 495
+old   1: insert into student values(&rollno,'&name','&dob','&dept',&marks)
+new   1: insert into student values(3,'George','19-Jan-1989','CS',495)
+
+1 row created.
+
+SQL> insert into student values(&rollno,'&name','&dob','&dept',&marks);
+Enter value for rollno: 4
+Enter value for name: Gourikripa
+Enter value for dob: 27-nov-1989
+Enter value for dept: CS
+Enter value for marks: 495
+old   1: insert into student values(&rollno,'&name','&dob','&dept',&marks)
+new   1: insert into student values(4,'Gourikripa','27-nov-1989','CS',495)
+
+1 row created.
+
+SQL> insert into student values(&rollno,'&name','&dob','&dept',&marks);
+Enter value for rollno: 5
+Enter value for name: Henin
+Enter value for dob: 12-dec-1988
+Enter value for dept: IT
+Enter value for marks: 525
+old   1: insert into student values(&rollno,'&name','&dob','&dept',&marks)
+new   1: insert into student values(5,'Henin','12-dec-1988','IT',525)
+
+1 row created.
+
+SQL> insert into student values(&rollno,'&name','&dob','&dept',&marks);
+Enter value for rollno: 6
+Enter value for name: Ishana
+Enter value for dob: 25-dec-1988
+Enter value for dept: CS
+Enter value for marks: 500
+old   1: insert into student values(&rollno,'&name','&dob','&dept',&marks)
+new   1: insert into student values(6,'Ishana','25-dec-1988','CS',500)
+
+1 row created.
+
+SQL>  insert into student values(&rollno,'&name','&dob','&dept',&marks,'&address');
+Enter value for rollno: 7
+Enter value for name: Pranav
+Enter value for dob: 27-nov-1989
+Enter value for dept: CS
+Enter value for marks: 510
+Enter value for address: Green Valley,Cochin
+old   1:  insert into student values(&rollno,'&name','&dob','&dept',&marks,'&address')
+new   1:  insert into student values(7,'Pranav','27-nov-1989','CS',510,'Green Valley,Cochin')
+
+1 row created.
+
+b.SQL> alter table student add(address varchar(10));
+
+Table altered.
+
+SQL> alter table student modify(address varchar(1000));
+
+Table altered.
+
+c.SQL> select * from student;
+
+    ROLLNO NAME       DOB       DEPT       MARKS ADDRESS
+---------- ---------- --------- ----- ---------- ----------
+         1 Amitha     18-JUN-98 CS           480
+         2 arya       12-JUL-89 IT           500
+         3 George     19-JAN-89 CS           495
+         4 Gourikripa 27-NOV-89 CS           495
+         5 Henin      12-DEC-88 IT           525
+         6 Ishana     25-DEC-88 CS           500
+	 7 Pranav     27-NOV-89 CS           510
+
+7 rows selected.
+
+d.SQL> update student set address='NO:5,Gandhinagar' where rollno=1;
+
+1 row updated.
+
+SQL> update student set address='Flat NO:5A,Skyline,Aluva' where rollno=2;
+
+1 row updated.
+
+SQL> update student set address='Apple Heights,Padivattom' where rollno=3;
+
+1 row updated.
+
+SQL> update student set address='Green Valley,Cochin' where rollno=7;
+ 
+1 row updated.
+
+.SQL> select * from student;
+
+    ROLLNO NAME       DOB       DEPT       MARKS
+---------- ---------- --------- ----- ----------
+ADDRESS
+--------------------------------------------------------------------------------
+         1 Amitha     18-JUN-98 CS           480
+NO:5,Gandhinagar
+
+         2 arya       12-JUL-89 IT           500
+Flat NO:5A,Skyline,Aluva
+
+         3 George     19-JAN-89 CS           495
+Apple Heights,Padivattom
+
+
+    ROLLNO NAME       DOB       DEPT       MARKS
+---------- ---------- --------- ----- ----------
+ADDRESS
+--------------------------------------------------------------------------------
+         4 Gourikripa 28-NOV-89 CS           495
+
+
+         5 Henin      12-DEC-88 IT           525
+
+
+         6 Ishana     25-DEC-88 CS           500
+
+
+
+    ROLLNO NAME       DOB       DEPT       MARKS
+---------- ---------- --------- ----- ----------
+ADDRESS
+--------------------------------------------------------------------------------
+         7 Pranav     27-NOV-89 CS           510
+Green Valley,Cochin
+
+
+7 rows selected.
+
+e.SQL> select name,dob from student where months_between(sysdate,dob)/12<32;
+
+NAME       DOB
+---------- ---------
+arya       12-JUL-89
+Gourikripa 28-NOV-89
+Pranav     27-NOV-89
+
+f.SQL> select * from student order by marks;
+
+    ROLLNO NAME       DOB       DEPT       MARKS
+---------- ---------- --------- ----- ----------
+ADDRESS
+--------------------------------------------------------------------------------
+         1 Amitha     18-JUN-88 CS           480
+NO:5,Gandhinagar
+
+         4 Gourikripa 28-NOV-89 CS           495
+
+
+         3 George     19-JAN-89 CS           495
+Apple Heights,Padivattom
+
+
+    ROLLNO NAME       DOB       DEPT       MARKS
+---------- ---------- --------- ----- ----------
+ADDRESS
+--------------------------------------------------------------------------------
+         6 Ishana     25-DEC-88 CS           500
+
+
+         2 arya       12-JUL-89 IT           500
+Flat NO:5A,Skyline,Aluva
+
+         7 Pranav     27-NOV-89 CS           510
+Green Valley,Cochin
+
+
+    ROLLNO NAME       DOB       DEPT       MARKS
+---------- ---------- --------- ----- ----------
+ADDRESS
+--------------------------------------------------------------------------------
+         5 Henin      12-DEC-88 IT           525
+
+
+
+7 rows selected.
+
+g.SQL> select name from student where dept='CS' and marks>500;
+
+NAME
+----------
+Pranav
+
+SQL> drop table student;
+
+Table dropped.

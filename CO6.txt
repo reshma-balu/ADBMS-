@@ -1,0 +1,60 @@
+1.Python program to create a collection & insert the patient details one by one.
+2.Python program to create a collection & insert ‘n’ patient details using 'insert many’
+
+
+1.from pprint import pprint
+from pymongo import MongoClient
+
+client = MongoClient("mongodb://localhost:27017/")
+
+db = client["med_data"]
+my_collection = db["patient_data"]
+patient_record = {
+    "Name":"Sanju",
+    "Age":27,
+    "Sex":"r",
+    "Blood pressure":[{"sys":176},{"dia":82}],
+    "Heart rate":62
+}
+my_collection.insert_one(patient_record)
+print("DATA")
+for item in my_collection.find():
+        pprint(item)
+
+
+
+2.from pprint import pprint
+from pymongo import MongoClient
+
+client = MongoClient("mongodb://localhost:27017/")
+
+db = client["med_data"]
+my_collection = db["patient_data"]
+patient_records = [
+{
+    "Name":"Adam",
+    "Age":55,
+    "Sex":"M",
+    "Blood pressure":[{"sys":132},{"dia":73}],
+    "Heart rate":73
+},
+{
+    "Name":"Myna",
+    "Age":34,
+    "Sex":"F",
+    "Blood pressure":[{"sys":120},{"dia":70}],
+    "Heart rate":67
+},
+{
+    "Name":"Sally",
+    "Age":19,
+    "Sex":"F",
+    "Blood pressure":[{"sys":121},{"dia":71}],
+    "Heart rate":73
+}
+]
+my_collection.insert_many(patient_records)
+
+print("DATA")
+for item in my_collection.find():
+        pprint(item)

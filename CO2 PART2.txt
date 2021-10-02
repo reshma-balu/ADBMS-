@@ -1,0 +1,512 @@
+1.Program to find sum of two numbers.
+SQL> set serveroutput on
+SQL>  declare
+  2   x number(5);
+  3   y number(5);
+  4   z number(7);
+  5   begin
+  6   x:=10;
+  7   y:=20;
+  8   z:=x+y;
+  9   dbms_output.put_line('Sum is'||z);
+ 10   end;
+ 11   /
+Sum is30
+
+PL/SQL procedure successfully completed.
+
+2.Program to check armstrong number.
+SQL> declare
+  2  n number(3);
+  3  s number(3):=0;
+  4  t number(3);
+  5  begin
+  6  n:=&n;
+  7  t:=n;
+  8  while t>0 loop
+  9  s:=s+power((t mod 10),3);
+ 10  t:=trunc(t/10);
+ 11  end loop;
+ 12  if(s=n) then
+ 13  dbms_output.put_line('The Given Number'||n||'is an Armstrong Number');
+ 14  else
+ 15  dbms_output.put_line('The Given Number'||n||'is not an Armstrong Number');
+ 16  end if;
+ 17  end;
+ 18  /
+Enter value for n: 153
+old   6: n:=&n;
+new   6: n:=153;
+The Given Number153is an Armstrong Number
+
+PL/SQL procedure successfully completed.
+
+3.Create table that contains itemid,item_name & price of several items sold in a grocery shop, Using functions retrieve the price from table when itemid is given as input.
+
+SQL> CREATE TABLE ITEM(ITEM_ID INTEGER,ITEMNAME VARCHAR(20),PRICE FLOAT);
+
+Table created.
+
+
+SQL> INSERT INTO ITEM VALUES(2334,'GEERA',206.25);
+
+1 row created.
+
+SQL> INSERT INTO ITEM VALUES(2532,'CORN SOUP',34.65);
+
+1 row created.
+
+SQL> INSERT INTO ITEM VALUES(2124,'LAYS',20);
+
+1 row created.
+
+SQL> INSERT INTO ITEM VALUES(4531,'SET',99.99);
+
+1 row created.
+
+SQL> INSERT INTO ITEM VALUES(2319,'DURACELL',45.5);
+
+1 row created.
+
+SQL> SELECT * FROM ITEM;
+
+   ITEM_ID ITEMNAME                  PRICE
+---------- -------------------- ----------
+      2334 GEERA                    206.25
+      2532 CORN SOUP                 34.65
+      2124 LAYS                         20
+      4531 SET                       99.99
+      2319 DURACELL                   45.5
+
+SQL> CREATE OR REPLACE FUNCTION ITEMPRICE(ID NUMBER) RETURN NUMBER IS
+  2  P ITEM.PRICE % TYPE;
+  3  BEGIN
+  4  SELECT PRICE INTO P FROM ITEM WHERE ITEM_ID=ID;
+  5  RETURN(P);
+  6  END;
+  7  /
+
+Function created.
+
+SQL> DECLARE
+  2  PR NUMBER;
+  3  ID NUMBER;
+  4  BEGIN
+  5  ID:=&ITEMID;
+  6  PR:=ITEMPRICE(ID);
+  7  DBMS_OUTPUT.PUT_LINE('ITEM PRICE IS RS:'||PR);
+  8  END;
+  9  /
+Enter value for itemid: 2334
+old   5: ID:=&ITEMID;
+new   5: ID:=2334;
+
+PL/SQL procedure successfully completed.
+
+4.Write a PL/SQL function called POW that takes two numbers as argument and return the value of the first number raised to the power of the second.
+
+SQL> CREATE OR REPLACE FUNCTION POW (NO1 NUMBER,NO2 NUMBER) RETURN NUMBER AS
+  2  NO3 NUMBER;
+  3  BEGIN
+  4  SELECT POWER (NO1,NO2) INTO NO3 FROM DUAL;
+  5  RETURN NO3;
+  6  END;
+  7  /
+
+Function created.
+
+SQL> SELECT POWER (2,4) FROM DUAL;
+
+POWER(2,4)
+----------
+        16
+
+SQL> DECLARE
+  2  A NUMBER;
+  3  B NUMBER;
+  4  BEGIN
+  5  A:=&A;
+  6  B:=&B;
+  7  DBMS_OUTPUT.PUT_LINE('POWER(NO1,NO2)='||POW(A,B));
+  8  END;
+  9  /
+Enter value for a: 2
+old   5: A:=&A;
+new   5: A:=2;
+Enter value for b: 4
+old   6: B:=&B;
+new   6: B:=4;
+
+PL/SQL procedure successfully completed.
+
+
+5.Create a Simple Trigger that does not allow Insert,Update and Delete Operations on the Table.
+
+SQL> CREATE TRIGGER TR
+  2  BEFORE INSERT OR UPDATE OR DELETE ON ITEM FOR EACH ROW
+  3  BEGIN
+  4  RAISE_APPLICATION_ERROR(-20103,'YOU ARE NOT PERMITTED TO DO THIS OPERATION');
+  5  END;
+  6  /
+
+Trigger created.
+
+SQL> INSERT INTO ITEM VALUES(101,'RESHMA',1000);
+INSERT INTO ITEM VALUES(101,'RESHMA',1000)
+            *
+ERROR at line 1:
+ORA-20103: YOU ARE NOT PERMITTED TO DO THIS OPERATION
+ORA-06512: at "SCOTT.TR", line 2
+ORA-04088: error during execution of trigger 'SCOTT.TR'
+
+
+SQL> DELETE FROM ITEM WHERE ITEMNAME='SET';
+DELETE FROM ITEM WHERE ITEMNAME='SET'
+            *
+ERROR at line 1:
+ORA-20103: YOU ARE NOT PERMITTED TO DO THIS OPERATION
+ORA-06512: at "SCOTT.TR", line 2
+ORA-04088: error during execution of trigger 'SCOTT.TR'
+
+
+SQL> UPDATE ITEM SET PRICE=50 WHERE ITEM_ID=2319;
+UPDATE ITEM SET PRICE=50 WHERE ITEM_ID=2319
+       *
+ERROR at line 1:
+ORA-20103: YOU ARE NOT PERMITTED TO DO THIS OPERATION
+ORA-06512: at "SCOTT.TR", line 2
+ORA-04088: error during execution of trigger 'SCOTT.TR'
+
+6.Create a trigger that displays a message after update, Delete, Insert operations on a table.
+ 
+SQL> CREATE OR REPLACE TRIGGER TRG
+  2  AFTER UPDATE OR INSERT OR DELETE ON EMPLOYEE
+  3   FOR EACH ROW
+  4  BEGIN
+  5  IF UPDATING THEN
+  6  DBMS_OUTPUT.PUT_LINE('UPDATED');
+  7  ELSIF INSERTING THEN
+  8  DBMS_OUTPUT.PUT_LINE('INSERTED');
+  9  ELSIF INSERTING THEN
+ 10  DBMS_OUTPUT.PUT_LINE('DELETED');
+ 11  END IF;
+ 12  END;
+ 13   /
+
+Trigger created.
+
+SQL> INSERT INTO EMPLOYEE VALUES(6,'RESHMA',7000);
+
+1 row created.
+
+SQL> SELECT * FROM EMPLOYEE
+  2  ;
+
+        ID NAME                     SALARY
+---------- -------------------- ----------
+         1 ANN                        1000
+         2 BINU                       2000
+         3 DELMA                      3000
+         4 DENNA                      4000
+         5 EVA                        5000
+         6 RESHMA                     7000
+
+6 rows selected.
+
+SQL> DELETE FROM EMPLOYEE WHERE ID=6;
+
+1 row deleted.
+
+SQL> SELECT * FROM EMPLOYEE;
+
+        ID NAME                     SALARY
+---------- -------------------- ----------
+         1 ANN                        1000
+         2 BINU                       2000
+         3 DELMA                      3000
+         4 DENNA                      4000
+         5 EVA                        5000
+
+SQL> UPDATE EMPLOYEE SET SALARY=6000 WHERE ID=5;
+
+1 row updated.
+
+SQL> SELECT * FROM EMPLOYEE;
+
+        ID NAME                     SALARY
+---------- -------------------- ----------
+         1 ANN                        1000
+         2 BINU                       2000
+         3 DELMA                      3000
+         4 DENNA                      4000
+         5 EVA                        6000
+
+7.Create a trigger that gets invoked before insert operation on a table. The trigger should convert employee name to uppercase before its stored in the table.
+
+
+SQL> CREATE OR REPLACE TRIGGER TRG
+  2  BEFORE
+  3  INSERT ON EMPLOYEE
+  4  FOR EACH ROW
+  5  BEGIN
+  6  :NEW.ENAME:=UPPER(:NEW.ENAME);
+  7  END;
+  8  /
+
+ Trigger created
+
+SQL> SELECT * FROM EMPLOYEE;
+
+        ID NAME                     SALARY
+---------- -------------------- ----------
+         1 ANN                        1000
+         2 BINU                       2000
+         3 DELMA                      3000
+         4 DENNA                      4000
+         5 EVA                        6000
+
+
+8.Create a row-level trigger for the customers table that would fire for UPDATE operations performed on the CUSTOMERS table. This trigger should display the salary difference between the old values and new values
+
+SQL> CREATE OR REPLACE TRIGGER TRG1
+  2   BEFORE UPDATE ON CUSTOMERS FOR EACH ROW
+  3   WHEN(NEW.ID > 0)
+  4  DECLARE
+  5  SAL_DIFFERENCE NUMBER;
+  6   BEGIN
+  7   SAL_DIFFERENCE:=:NEW.SALARY-:OLD.SALARY;
+  8   DBMS_OUTPUT.PUT_LINE('OLD SALARY:'||:OLD.SALARY);
+  9  DBMS_OUTPUT.PUT_LINE('NEW SALARY:'||:NEW.SALARY);
+ 10  DBMS_OUTPUT.PUT_LINE('SALARY DIFFERENCE:'||SAL_DIFFERENCE);
+ 11  END;
+ 12  /
+
+Trigger created.
+
+SQL> SELECT * FROM CUSTOMERS;
+
+        ID NAME                        AGE
+---------- -------------------- ----------
+ADDRESS                                                SALARY
+-------------------------------------------------- ----------
+         1 RAMESH                       32
+AHMEDABAD                                                2000
+
+         2 KHILAN                       25
+DELHI                                                    1500
+
+         1 RAMESH                       32
+AHMEDABAD                                                2000
+
+
+        ID NAME                        AGE
+---------- -------------------- ----------
+ADDRESS                                                SALARY
+-------------------------------------------------- ----------
+         3 KAUSHIK                      23
+KOTA                                                     2000
+
+         4 CHAITHALI                    25
+MUMBAI                                                   6500
+
+         5 HARDIK                       27
+BHOPAL                                                   8500
+
+
+        ID NAME                        AGE
+---------- -------------------- ----------
+ADDRESS                                                SALARY
+-------------------------------------------------- ----------
+         6 KOMAL                        22
+MP                                                       4500
+
+         7 MUFFY                        24
+INDORE                                                   1000
+
+
+8 rows selected.
+
+SQL> UPDATE CUSTOMERS SET SALARY=6000 WHERE ID=7;
+
+1 row updated.
+
+SQL> SELECT * FROM CUSTOMERS;
+
+        ID NAME                        AGE
+---------- -------------------- ----------
+ADDRESS                                                SALARY
+-------------------------------------------------- ----------
+         1 RAMESH                       32
+AHMEDABAD                                                2000
+
+         2 KHILAN                       25
+DELHI                                                    1500
+
+         1 RAMESH                       32
+AHMEDABAD                                                2000
+
+
+        ID NAME                        AGE
+---------- -------------------- ----------
+ADDRESS                                                SALARY
+-------------------------------------------------- ----------
+         3 KAUSHIK                      23
+KOTA                                                     2000
+
+         4 CHAITHALI                    25
+MUMBAI                                                   6500
+
+         5 HARDIK                       27
+BHOPAL                                                   8500
+
+
+        ID NAME                        AGE
+---------- -------------------- ----------
+ADDRESS                                                SALARY
+-------------------------------------------------- ----------
+         6 KOMAL                        22
+MP                                                       4500
+
+         7 MUFFY                        24
+INDORE                                                   6000
+
+
+8 rows selected.
+
+9.Calculate Interest for Fixed Deposit Amount Using Cursors
+
+SQL> CREATE TABLE AMOUNT(ACCNO INT,YEARS INT,AMOUNT INT,INTEREST INT);
+
+Table created.
+
+SQL> INSERT INTO AMOUNT VALUES(1001,2,1000,100);
+
+1 row created.
+
+SQL> INSERT INTO AMOUNT VALUES(1002,4,2000,200);
+
+1 row created.
+
+SQL> INSERT INTO AMOUNT VALUES(1003,3,3000,300);
+
+1 row created.
+
+SQL> INSERT INTO AMOUNT VALUES(1004,4,4000,400);
+
+1 row created.
+
+SQL> INSERT INTO AMOUNT VALUES(1005,5,5000,500);
+
+1 row created.
+
+SQL> SELECT * FROM AMOUNT;
+
+     ACCNO      YEARS     AMOUNT   INTEREST
+---------- ---------- ---------- ----------
+      1001          2       1000        100
+      1002          4       2000        200
+      1003          3       3000        300
+      1004          4       4000        400
+      1005          5       5000        500
+
+SQL> UPDATE AMOUNT SET INTEREST=0 WHERE YEARS<=4;
+
+4 rows updated.
+
+SQL> SELECT * FROM AMOUNT;
+
+     ACCNO      YEARS     AMOUNT   INTEREST
+---------- ---------- ---------- ----------
+      1001          2       1000          0
+      1002          4       2000          0
+      1003          3       3000          0
+      1004          4       4000          0
+      1005          5       5000        500
+
+SQL>  DECLARE
+  2  CURSOR AMOUNT IS SELECT * FROM AMOUNT;
+  3   BEGIN
+  4  FOR I IN AMOUNT
+  5  LOOP
+  6  IF I.AMOUNT<=1000 THEN
+  7  UPDATE AMOUNT SET INTEREST=I.AMOUNT*1 WHERE ACCNO=I.ACCNO;
+  8  ELSIF I.AMOUNT>1000 AND I.AMOUNT<=5000 THEN
+  9   UPDATE AMOUNT SET INTEREST=I.AMOUNT*2 WHERE ACCNO=I.ACCNO;
+ 10  ELSE
+ 11   UPDATE AMOUNT SET INTEREST=I.AMOUNT*3 WHERE ACCNO=I.ACCNO;
+ 12  END IF;
+ 13  END LOOP;
+ 14  END;
+ 15  /
+
+PL/SQL procedure successfully completed.
+
+SQL> SELECT * FROM AMOUNT;
+
+     ACCNO      YEARS     AMOUNT   INTEREST
+---------- ---------- ---------- ----------
+      1001          2       1000       1000
+      1002          4       2000       4000
+      1003          3       3000       6000
+      1004          4       4000       8000
+      1005          5       5000      10000
+
+10.Calculate Electricity Bill Using Cursors
+
+SQL> CREATE TABLE EBILL(EBNO INT PRIMARY KEY,NAME VARCHAR(20),UNITS INT,CHARGES FLOAT);
+
+Table created.
+
+SQL> INSERT INTO EBILL VALUES(1,'STELLA',100,99.9);
+
+1 row created.
+
+SQL> INSERT INTO EBILL VALUES(2,'SNEHA',200,88.8);
+
+1 row created.
+
+SQL> INSERT INTO EBILL VALUES(3,'SARA',300,77.7);
+
+1 row created.
+
+SQL> INSERT INTO EBILL VALUES(4,'SANDRA',400,66.6);
+
+1 row created.
+
+SQL> SELECT * FROM EBILL;
+
+      EBNO NAME                      UNITS    CHARGES
+---------- -------------------- ---------- ----------
+         1 STELLA                      100       99.9
+         2 SNEHA                       200       88.8
+         3 SARA                        300       77.7
+         4 SANDRA                      400       66.6
+
+SQL> DECLARE
+  2  CURSOR BILL IS SELECT * FROM EBILL;
+  3  BEGIN
+  4  FOR I IN BILL
+  5  LOOP
+  6  IF I.UNITS<=100 THEN
+  7  UPDATE EBILL SET CHARGES=I.UNITS*1 WHERE EBNO=I.EBNO;
+  8  ELSIF I.UNITS>100 AND I.UNITS<=400 THEN
+  9  UPDATE EBILL SET CHARGES=I.UNITS*2 WHERE EBNO=I.EBNO;
+ 10  ELSE
+ 11  UPDATE EBILL SET CHARGES=I.UNITS*3 WHERE EBNO=I.EBNO;
+ 12  END IF;
+ 13  END LOOP;
+ 14  END;
+ 15  /
+
+PL/SQL procedure successfully completed.
+
+SQL> SELECT * FROM EBILL;
+
+      EBNO NAME                      UNITS    CHARGES
+---------- -------------------- ---------- ----------
+         1 STELLA                      100        100
+         2 SNEHA                       200        400
+         3 SARA                        300        600
+         4 SANDRA                      400        800
+
+

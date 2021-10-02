@@ -1,0 +1,47 @@
+Create a table student with following information:
+Student ( rollno, name ,dob, dept, marks)
+
+SQL> create table student1(rollno integer primary key,name varchar(20),dob date,dept varchar(5),mark
+s float);
+
+Table created.
+
+SQL> insert into student1 values(1,'Amitha','18-Jun-1998','CS',80);
+
+1 row created.
+
+SQL> insert into student1 values(2,'Meera','10-Jun-1998','CS',70);
+
+1 row created.
+
+SQL> insert into student1 values(3,'Sona','1-April-1999','CS',50);
+
+1 row created.
+
+SQL> insert into student1 values(4,'Zain','3-May-1999','CS',100);
+
+1 row created.
+
+g) Retrieve names of students with department CS and marks greater than 70.
+
+SQL> select name from student1 where dept='CS' and marks>70;
+
+NAME
+--------------------
+Amitha
+Zain
+
+h) Retrieve names of students with marks greater than average marks.
+
+SQL> select name from student1 where marks>(select avg(marks) from student1);
+
+NAME
+--------------------
+Amitha
+Zain
+
+i) drop the student table.
+
+SQL>  drop table student1;
+
+Table dropped.
