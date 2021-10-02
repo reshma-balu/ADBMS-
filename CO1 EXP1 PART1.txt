@@ -1,3 +1,17 @@
+EXP:1 STUDENT DATABASE
+Aim:
+Create a table student with following information:
+Student ( rollno, name ,dob, dept, marks)
+a) Insert rows into the table.Using various ways of insertion(insert)command.
+b) Alter the student table to contain address of the student,and also modify the size of
+name.
+c) Display the content of the table.
+d) Insert values into address field and display the content.
+e) Retrieve names of students whose age is less than 20.
+f) Arrange table in ascending order of marks.
+g) Retrieve names of students with department CS and marks greater than 70.
+h) Retrieve names of students with marks greater than average marks.
+i) drop the student table.
 SQL> create table student(rollno integer primary key,name varchar(20),dob date,dept varchar(5),marks
  float);
 
